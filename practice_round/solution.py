@@ -29,22 +29,23 @@ class PizzaProblem():
         """TODO: sort pizzas in descending order. Implement dynamic programming top_down"""
         self.sorted_pizzas = -np.sort(-self.pizzas)
         self.sorted_idx = np.argsort(-self.pizzas)
-        self.score = self.recursive_solution(self.sorted_pizzas,self.M,0)
+        self.score = self.recursive_solution(self.sorted_pizzas,self.M,0,[])
         #self.findPizzasBottomUp()
-    def recursive_solution(self,sorted_pizzas,M,i):
+    def recursive_solution(self,sorted_pizzas,M,i,path):
 
         if M<0:
-            return 0
+            return [0,path]
         if sorted_pizzas.size==0:
-            return 0
+            return [0,path]
         if sorted_pizzas[0] > M:
-            return self.recursive_solution(sorted_pizzas[1:],M,i+1)
-        score1 = sorted_pizzas[0] + self.recursive_solution(sorted_pizzas[1:], M - sorted_pizzas[0],i+1)
-        if score1 > M:
-            score1 = 0
-        score2 = self.recursive_solution(sorted_pizzas[1:], M,i+1)
-        if score1 > score2:
-            self.chosenPizzas.append(i)
+            return self.recursive_solution(sorted_pizzas[1:],M,i+1,path)
+        score1 =self.recursive_solution(sorted_pizzas[1:], M - sorted_pizzas[0],i+1,path.copy())
+        score1[0] = sorted_pizzas[0] + score1[0]
+        if score1[0] > M:
+            score1[0] = 0
+        score2 = self.recursive_solution(sorted_pizzas[1:], M,i+1,path.copy())
+        if score1[0] > score2[0]:
+            score1[1].append(i)
             return score1
         else:
             return score2
@@ -65,18 +66,19 @@ class PizzaProblem():
             self.max_scores[sub_length] = max
         self.score = self.max_scores[-1]
     def reconstruct_solution(self):
+        output = ''
         sol = []
-        score = self.score
-        for pizza_type in reversed(self.chosenPizzas):
-            sol.append(self.sorted_args[pizza_type]) #append real index in original list
+        score = (self.score[0])
+        chosen_pizzas = self.score[1]
+        for pizza_type in chosen_pizzas:
+            sol.append(self.sorted_idx[pizza_type]) #append real index in original list
             score = score - self.sorted_pizzas[pizza_type]
             if score==0:
                 break
-        return sol
-    def printOutput(self):
-        """TODO: Print output in form of submission file """
-        print(len(self.score))
-        print(" ".join(self.c))
+        output = output+str(self.score[0])
+        output = output+'\n'
+        output = output+" ".join(map(str,sorted(sol)))
+        return output
     def printInput(self):
         print(self.M,self.N)
         print(self.pizzas)
