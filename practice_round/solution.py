@@ -23,7 +23,8 @@ class PizzaProblem():
         """TODO: sort pizzas in descending order. Implement bottom_up DP """
     def printOutput(self):
         """TODO: Print output in form of submission file """
+        print(len(self.chosenPizzas))
+        print()
 if __name__ == "__main__":
-    pizza_problem
-    print(a)
+    pizzas = PizzaProblem('a_example.in')
 
