@@ -5,11 +5,13 @@ class MyTestCase(unittest.TestCase):
 
     def test_readInput(self):
         pizzas = s.PizzaProblem('a_example.txt')
-
+        pizzas.printInput()
 
     def test_problema(self):
         """to do"""
-        a = s.read_input()
+        pizzas = s.PizzaProblem('a_example.txt')
+        pizzas.solution()
+        print(pizzas.score)
 
 
 if __name__ == '__main__':
