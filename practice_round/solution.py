@@ -15,7 +15,9 @@ class PizzaProblem():
         """TODO: parse input"""
         with open(file_name) as f:
             self.M,self.N = f.readline().split()
-            self.pizzas = np.array(f.readline().split())
+            self.M = int(self.M)
+            self.N = int(self.N)
+            self.pizzas = np.array(f.readline().split()).astype(int)
     def findPizzasRecursive(self):
         """TODO: sort pizzas in descending order. Implement dynamic programming top_down"""
     def findPizzasBottomUp(self):
