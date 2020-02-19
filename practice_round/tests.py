@@ -11,7 +11,11 @@ class MyTestCase(unittest.TestCase):
         """to do"""
         pizzas = s.PizzaProblem('a_example.txt')
         pizzas.solution()
-        print(pizzas.score)
+        ans = pizzas.reconstruct_solution()
+        self.assertEquals((pizzas.score),13)
+
+    def test_output(self):
+        pizzas
 
 
 if __name__ == '__main__':
