@@ -6,7 +6,7 @@ class PizzaProblem():
     pizzas = np.NaN ## contains array with pizzas
     M = 0 # number of slices
     N = 0 #number of pizzas
-    chosenPizzas = np.NaN
+    chosenPizzas = [] # list with index of chosen pizzas
     score = 0
     def __init__(self,file_name):
         self.read_input(file_name)
@@ -14,9 +14,8 @@ class PizzaProblem():
     def read_input(self,file_name):
         """TODO: parse input"""
         with open(file_name) as f:
-            M,N = f.readline().split()
-            pizzas = np.array(f.readline().split())
-
+            self.M,self.N = f.readline().split()
+            self.pizzas = np.array(f.readline().split())
     def findPizzasRecursive(self):
         """TODO: sort pizzas in descending order. Implement dynamic programming top_down"""
     def findPizzasBottomUp(self):
@@ -24,7 +23,7 @@ class PizzaProblem():
     def printOutput(self):
         """TODO: Print output in form of submission file """
         print(len(self.chosenPizzas))
-        print()
+        print(" ".join(self.chosenPizzas))
 if __name__ == "__main__":
     pizzas = PizzaProblem('a_example.in')
 

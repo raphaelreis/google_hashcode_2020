@@ -4,8 +4,8 @@ from practice_round import solution as s
 class MyTestCase(unittest.TestCase):
 
     def test_readInput(self):
-        pizzas = s.PizzaProblem('a_example.in')
-        self.assertEqual(True, False)
+        pizzas = s.PizzaProblem('a_example.txt')
+
 
     def test_problema(self):
         """to do"""
