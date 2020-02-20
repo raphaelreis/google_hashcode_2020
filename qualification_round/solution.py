@@ -33,29 +33,7 @@ def parse_libraries(s, L):
     
     return books_count, t, b, b_ids
 
-if __name__ == "__main__":
-    file_name = "a_example.txt"
 
-    s = parse_input(file_name)
-    B, L, D = get_constants(s[0])
-    W = get_books_weight(s[1])
-    
-    # t = []
-    # books_count = []
-    # b = []
-    # b_ids = []
-    
-    # for i in range(2, 3 + L, 2):
-    #     print(i)
-    #     lib_setup = [int(i) for i in s[i].split()]
-    #     books_count.append(lib_setup[0])
-    #     t.append(lib_setup[1])
-    #     b.append(lib_setup[2])
-    #     b_ids.append([int(i) for i in s[i+1].split()])
-
-    books_count, t, b, b_ids = parse_libraries(s, L)
-
-    print(books_count, t, b, b_ids)
 
 
 class LibrarySystem:
@@ -97,5 +75,25 @@ class LibrarySystem:
 
 
 if __name__ == "__main__":
-    a =1
+    file_name = "a_example.txt"
 
+    s = parse_input(file_name)
+    B, L, D = get_constants(s[0])
+    W = get_books_weight(s[1])
+
+    # t = []
+    # books_count = []
+    # b = []
+    # b_ids = []
+
+    # for i in range(2, 3 + L, 2):
+    #     print(i)
+    #     lib_setup = [int(i) for i in s[i].split()]
+    #     books_count.append(lib_setup[0])
+    #     t.append(lib_setup[1])
+    #     b.append(lib_setup[2])
+    #     b_ids.append([int(i) for i in s[i+1].split()])
+
+    books_count, t, b, b_ids = parse_libraries(s, L)
+
+    print(books_count, t, b, b_ids)
