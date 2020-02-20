@@ -15,8 +15,8 @@ class PizzaProblem():
     score = 0
     def __init__(self,file_name):
         self.read_input(file_name)
-        self.max_scores = np.zeros(self.M+1)
-        self.c = self.max_scores.copy()
+        self.max_scores = [[0]]
+        self.c = np.zeros(self.N+1)
     def read_input(self,file_name):
         """TODO: parse input"""
         with open(file_name) as f:
@@ -27,10 +27,11 @@ class PizzaProblem():
 
     def solution(self):
         """TODO: sort pizzas in descending order. Implement dynamic programming top_down"""
-        self.sorted_pizzas = -np.sort(-self.pizzas)
-        self.sorted_idx = np.argsort(-self.pizzas)
-        self.score = self.recursive_solution(self.sorted_pizzas,self.M,0,[])
-        #self.findPizzasBottomUp()
+        #self.sorted_pizzas = -np.sort(-self.pizzas) #use for recursive
+        self.sorted_pizzas = np.sort(self.pizzas)
+        self.sorted_idx = np.argsort(self.pizzas)
+        #self.score = self.recursive_solution(self.sorted_pizzas,self.M,0,[])
+        self.findPizzasBottomUp()
     def recursive_solution(self,sorted_pizzas,M,i,path):
 
         if M<0:
@@ -54,18 +55,24 @@ class PizzaProblem():
          #          ,self.recursive_solution(sorted_pizzas[1:], M))
     def findPizzasBottomUp(self):
         """TODO: sort pizzas in descending order. Implement bottom_up DP """
-        for sub_length in range(1,self.M+1):
-            max = 0
-            for cut in range(self.sorted_pizzas.size): #cut contains index of array
-                score = self.sorted_pizzas[cut] + self.c[sub_length-self.sorted_pizzas[cut]]
-                if score > sub_length:
-                    break
-                if score>max:
-                    self.c[sub_length] = cut
-                    max = score
-            self.max_scores[sub_length] = max
-        self.score = self.max_scores[-1]
-    def reconstruct_solution(self):
+        max = 0
+        for sub_size in range(1,self.N+1):
+            val = self.sorted_pizzas[sub_size-1]
+            sub_scores =  []
+            for i,prev_scores in enumerate(self.max_scores):
+                for j,prev_score in enumerate(prev_scores):
+                    score = val+prev_score
+                    if score>self.M:
+                        score = 0
+                    sub_scores.append(score)
+                    #self.c.append([i,j])
+                    if score > max:
+                        max = score
+                        self.c = [i,j]
+            #sub_scores.append(self.max_scores[sub_size-1][0]) #append first element of previous list
+            self.max_scores.append(sub_scores)
+        self.score = max
+    def reconstruct_solution_recursive(self):
         output = ''
         sol = []
         score = (self.score[0])
@@ -79,6 +86,20 @@ class PizzaProblem():
         output = output+'\n'
         output = output+" ".join(map(str,sorted(sol)))
         return output
+    def reconstruct_solution_bottom_up(self):
+        output = ''
+        sol = [item for sublist in self.max_scores for item in sublist]
+        idx = np.argmax(sol)
+        used_pizzas = list(map(bool,list(reversed(list(bin(idx)[2:]))))) # corresponds to indexes of solution
+        final_sol = self.sorted_idx[used_pizzas]
+        final_sol = map(str, sorted(final_sol))
+        output = output + str(self.score[0])
+        output = output + '\n'
+        output = output + " ".join(map(str, sorted(sol)))
+        return output
+
+
+
     def printInput(self):
         print(self.M,self.N)
         print(self.pizzas)

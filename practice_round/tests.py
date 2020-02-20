@@ -11,7 +11,7 @@ class MyTestCase(unittest.TestCase):
         """to do"""
         pizzas = s.PizzaProblem('a_example.txt')
         pizzas.solution()
-        print(pizzas.reconstruct_solution())
+        print(pizzas.reconstruct_solution_bottom_up())
         output = '16\n0 2 3'
         self.assertEquals(pizzas.reconstruct_solution(),output)
 
