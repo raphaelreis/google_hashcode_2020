@@ -39,13 +39,15 @@ def parse_libraries(s, L):
 class LibrarySystem:
 
     def __init__(self,filename):
-        self.parse_input(filename)
-        self.w = np.array([0,1,2,3]) #need to sort
-        self.libs_df = pd.DataFrame(columns=['t','b','b_ids','taken_books','score'])
+        s = parse_input(file_name)
+        self.B, self.L, self.D = get_constants(s[0]) # B: Number of books,L: number of libraries,D: number of days
+        books_count, t, b, b_ids = parse_libraries(s, self.L)
+        self.w = np.array(get_books_weight(s[1]))
+        self.libs_df = pd.DataFrame(zip(t,b,b_ids),columns=['t','b','b_ids'])
+        self.libs_df['taken_books'] = 0
+        self.libs_df['score']=0
 
 
-    def parse_input(self,filename):
-        """TODO: Parse input file"""
 
     def print_output(self):
         """TODO: Print output as requested"""
@@ -68,8 +70,8 @@ class LibrarySystem:
 
     def compute_score(self,df:pd.Series):
         """"TODO: Compute score of a given row at a given time step"""
-        brute_score = self.w.dot(df.b_ids)
-        book_ids = self.sorted_idx[brute_score!=0][-df.b:]
+        brute_score = self.sorted_w.dot(df.b_ids)
+        book_ids = self.sorted_idx[brute_score!=0][:self.b]
         score = np.sum(brute_score[book_ids])/df.t # Sum of book scores/signup time
         return score
 
@@ -77,9 +79,10 @@ class LibrarySystem:
 if __name__ == "__main__":
     file_name = "a_example.txt"
 
-    s = parse_input(file_name)
-    B, L, D = get_constants(s[0])
-    W = get_books_weight(s[1])
+    #s = parse_input(file_name)
+    system = LibrarySystem(file_name)
+    #B, L, D = get_constants(s[0])
+    #W = get_books_weight(s[1])
 
     # t = []
     # books_count = []
@@ -94,6 +97,6 @@ if __name__ == "__main__":
     #     b.append(lib_setup[2])
     #     b_ids.append([int(i) for i in s[i+1].split()])
 
-    books_count, t, b, b_ids = parse_libraries(s, L)
+    #books_count, t, b, b_ids = parse_libraries(s, L)
 
-    print(books_count, t, b, b_ids)
+    #print(books_count, t, b, b_ids)
