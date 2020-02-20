@@ -106,4 +106,5 @@ class PizzaProblem():
         return
 if __name__ == "__main__":
     pizzas = PizzaProblem('a_example.in')
+>>>>>>> cb5c0618dffa55bbcd635a0ef311627f8cef3229
 
