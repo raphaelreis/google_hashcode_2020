@@ -3,14 +3,14 @@ import pandas as pd
 
 class LibrarySystem:
 
-    def __init__(self,file_id):
-        self.parse_input(file_id)
+    def __init__(self,filename):
+        self.parse_input(filename)
 
 
-    def parse_input(filename):
+    def parse_input(self,filename):
         """TODO: Parse input file"""
 
-    def print_output():
+    def print_output(self):
         """TODO: Print output as requested"""
 
 
