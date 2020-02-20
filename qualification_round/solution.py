@@ -7,4 +7,4 @@ def print_output():
 
 
 if __name__ == "__main__":
-    a =1 
+    a =1
