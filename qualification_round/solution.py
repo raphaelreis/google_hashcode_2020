@@ -43,24 +43,25 @@ class LibrarySystem:
         self.B, self.L, self.D = get_constants(s[0]) # B: Number of books,L: number of libraries,D: number of days
         books_count, t, b, b_ids = parse_libraries(s, self.L)
         self.w = np.array(get_books_weight(s[1]))
+        bool_list = []
+        for b_id in b_ids:
+            vals = self.w.__index__()==b_id
+            bool_list.append(vals)
+
         self.libs_df = pd.DataFrame(zip(t,b,b_ids),columns=['t','b','b_ids'])
         self.libs_df['taken_books'] = 0
         self.libs_df['score']=0
-        self.libs_df['b_ids'].apply(lambda l: np.array(l))
-
+        self.libs_df.b_ids=self.libs_df['b_ids'].apply(lambda l: np.array(l))
+        self.sorted_w = -np.sort(-self.w)
+        self.sorted_idx = np.argsort(-self.w)
+        # Update indexes in library
+        #self.libs_df.b_ids = self.libs_df.b_ids.apply(lambda x: x[self.sorted_idx])
 
     def print_output(self):
         """TODO: Print output as requested"""
 
 
 
-    def setup(self):
-        """TODO: Sort book score"""
-        self.sorted_w = -np.sort(-self.w)
-        self.sorted_idx = np.argsort(self.w)
-
-        # Update indexes in library
-        self.libs_df.b = self.libs_df.b_ids.apply(lambda x: x[self.sorted_idx],axis=1)
     def greedy_solution(self):
         """TODO: Iterate over available books, taking largest score at a time. Updating score at every iteration"""
 
@@ -70,7 +71,7 @@ class LibrarySystem:
 
     def compute_score(self,df:pd.Series):
         """"TODO: Compute score of a given row at a given time step"""
-        brute_score = self.sorted_w.dot(df.b_ids)
+        brute_score = np.multiply(self.sorted_w,df.b_ids)
         book_ids = self.sorted_idx[brute_score!=0][:self.b]
         score = np.sum(brute_score[book_ids])/df.t # Sum of book scores/signup time
         return score
@@ -80,5 +81,4 @@ if __name__ == "__main__":
     file_name = "a_example.txt"
 
     system = LibrarySystem(file_name)
-    print(system.libs_df)
     system.libs_df.apply(system.compute_score,axis=1)
